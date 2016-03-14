@@ -1,0 +1,17 @@
+## PREPARE FOR GENERAL USE
+sudo apt-get update
+sudo apt-get install git
+
+
+## PREPARE FOR GPIO USAGE
+sudo apt-get install rpi.gpio
+# from http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/
+
+
+## AUTORUN PYTHON SCRIPT ON BOOT
+sudo nano /lib/systemd/system/myscript.service
+# (edit)
+sudo chmod 644 /lib/systemd/system/myscript.service
+sudo systemctl daemon-reload
+sudo systemctl enable myscript.service
+# from http://www.raspberrypi-spy.co.uk/2015/10/how-to-autorun-a-python-script-on-boot-using-systemd/
