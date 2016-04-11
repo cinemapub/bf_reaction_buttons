@@ -15,7 +15,7 @@ B   7
 
 GPIO numbering:
 Power: Top R and bottom B
-Buttons: 2 3 4 17 27 22
+Buttons: 17 27 22 10 9 11
 
 Physical numbering:
 Power: 2 (5V) and 25 (ground)

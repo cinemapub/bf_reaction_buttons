@@ -1,30 +1,10 @@
 #!/usr/bin/env python3
-
 import datetime
 import time
 import sys
 import select
 import os
-
-import pifacecad
-
-cad = pifacecad.PiFaceCAD()
-lcd = cad.lcd
-
-listener = pifacecad.SwitchEventListener(chip=cad)
-
-
-def init(display):
-	display.clear()
-	display.blink_off()
-	display.cursor_off()
-	display.backlight_on()
-
-
-def clear(display):
-	display.clear()
-	display.backlight_off()
-
+import RPi.GPIO as GPIO
 
 def button_press(event):
 	print (event.pin_num)
@@ -40,33 +20,26 @@ def register_buttons(buttonlistener):
 	buttonlistener.activate()
 
 def main():
-	# reset the screen.
-	init(lcd)
-	# register events
-	register_buttons(listener)
-	# initialise the state variable.
-	oldtext = ""
 	
+	GPIO.setmode(GPIO.BCM)
+
+	buttons = [17,27,22,18,23,24]
+	
+	for b in buttons:
+		print ("setting pin", b,"as input")
+		#GPIO.setup(b , GPIO.IN, pull_up_down=GPIO.PUD_UP)
+		GPIO.setup(b , GPIO.IN)
 	# loop forever
-	stopping = False
-	while not stopping:
-		datenow = datetime.datetime.now()
-		text = datenow.strftime('%c')
-		if oldtext != text:
-			lcd.clear()
-			oldtext = text
-			lcd.write(text)
-			#print(text)
+	try:  
+		while True:            # this will carry on until you hit CTRL+C 
+			status = []
+			for b in buttons:
+				status.append("%d: [%d]" % (b,GPIO.input(b)) )
+			print("Status: ", ', '.join(status))
+			time.sleep(1)         # wait 0.1 seconds  
 
-		# check for a keypress and exit if a key is pressed
-		if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
-			break
-
-		time.sleep(10)
-
-	print("terminating")
-	clear(lcd)
-	unregister_buttons(listener)
-
+	except KeyboardInterrupt:  
+		GPIO.cleanup()         # clean up after yourself  
+	
 if __name__ == "__main__":
 	main()
