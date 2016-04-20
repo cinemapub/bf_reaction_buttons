@@ -5,40 +5,55 @@ import sys
 import select
 import os
 import RPi.GPIO as GPIO
+import ConfigParser
+import pygame
 
-def button_press(event):
-	print (event.pin_num)
+def read_config(cfgfile):
+	global Config
+	Config = ConfigParser.ConfigParser()
+	Config.read(cfgfile)
+	for section in Config.sections():
+		options=Config.options(section)
+		pin=int(Config.get(section,"pin"))
+		name=Config.get(section,"name")
+		print("-- Setting button %s: %d (%s)" % (section,pin,name))
+		GPIO.setup(pin , GPIO.IN)
+		GPIO.add_event_detect(pin, GPIO.RISING, callback=button_react, bouncetime=500)
 
-
-def unregister_buttons(buttonlistener):
-	buttonlistener.deactivate()
-
-
-def register_buttons(buttonlistener):
-	for i in range(8):
-		buttonlistener.register(i, pifacecad.IODIR_FALLING_EDGE, button_press)
-	buttonlistener.activate()
-	
-def callback_function_print(input_pin): 
+def button_react(input_pin): 
+	global Config
 	now = time.strftime("%H:%M:%S", time.localtime(time.time()))
-	print ("%s: button pressed: [%d]" % (now,input_pin))
-	#time.sleep(1)
+	print ("%s: button pressed: [%d]:%s" % (now,input_pin,GPIO.input(input_pin)))
+	for section in Config.sections():
+		options=Config.options(section)
+		pin=int(Config.get(section,"pin"))
+		if(pin == input_pin):
+			name=Config.get(section,"name")
+			print("Play sound")
+			play_sound=Config.get(section,"play_sound")
+			exec_sound(play_sound)
+			print("Run command")
+			run_command=Config.get(section,"run_command")
+			exec_command(run_command)
+
+def exec_sound(sfile):
+	pygame.mixer.music.load(sfile)
+	pygame.mixer.music.play()
+	while pygame.mixer.music.get_busy() == True:
+		continue
+	
+def exec_command(stext):
+	os.system(stext)
 
 def main():
 	
+	print("## set GPIO mode")
 	GPIO.setmode(GPIO.BCM)
 	print(GPIO.RPI_INFO)
-
-	buttons = [17,27,22,18,23,24]
-	
-	for b in buttons:
-		print ("setting pin", b,"as input")
-		#GPIO.setup(b , GPIO.IN, pull_up_down=GPIO.PUD_UP)
-		GPIO.setup(b , GPIO.IN)
-		GPIO.add_event_detect(b, GPIO.FALLING, callback=callback_function_print, bouncetime=1000)
-
-	# loop forever
-
+	print("## initialize pygame mixer")
+	pygame.mixer.init()
+	print("## read config")
+	read_config("config/buttons.ini")
 
 	try:  
 		while True:            # this will carry on until you hit CTRL+C 
