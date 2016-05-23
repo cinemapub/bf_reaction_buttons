@@ -3,6 +3,11 @@ sudo apt-get update
 sudo apt-get install git
 
 
+## INSTALL PYTHON PYGAME
+sudo apt-get install python-setuptools
+sudo apt-get install python-pygame
+
+
 ## PREPARE FOR GPIO USAGE
 sudo apt-get install rpi.gpio
 # from http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/
