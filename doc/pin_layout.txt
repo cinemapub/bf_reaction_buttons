@@ -24,3 +24,21 @@ Buttons: 3 5 7 11 13 15
 B = black (ground)
 O = Orange (3.3V)
 R = Red (5V)
+
+
+ 3V3---o
+       |
+       |
+       >
+       > Resistor
+       >
+       |
+       |
+GPIO---o
+       |
+       |
+        \ Switch
+         \
+       |
+       |
+ GND---o   
