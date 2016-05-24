@@ -29,11 +29,11 @@ def button_react(input_pin):
 		pin=int(Config.get(section,"pin"))
 		if(pin == input_pin):
 			name=Config.get(section,"name")
-			print("Play sound")
 			play_sound=Config.get(section,"play_sound")
+			print("Play sound [%s]" % play_sound)
 			exec_sound(play_sound)
-			print("Run command")
 			run_command=Config.get(section,"run_command")
+			print("Run command [%s]" % run_command)
 			exec_command(run_command)
 
 def exec_sound(sfile):
