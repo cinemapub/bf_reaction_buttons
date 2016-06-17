@@ -61,13 +61,11 @@ def exec_sound(sfile):
 	print("SOUND: [%s]" % bname)
 	pygame.mixer.music.load(sfile)
 	pygame.mixer.music.play()
-	#while pygame.mixer.music.get_busy() == True:
-	#	continue
 	
 def exec_url(url):
 	print("HTTP:  [%s]" % url)
 	#response = urllib2.urlopen(url) # this is synchronous
-	os.system("/usr/bin/curl -s \"%s\" -o /dev/null &" % url)
+	os.system("/usr/bin/curl -s \"%s\" -o /dev/null &" % url)	# runs async - doesn't stop the program
 
 def exec_command(stext):
 	print("EXEC:  [%s]" % stext)
@@ -75,22 +73,17 @@ def exec_command(stext):
 
 def main():
 	os.system('clear') # clear screen
-	#print("## set GPIO mode")
-	GPIO.setmode(GPIO.BCM)
-	print(GPIO.RPI_INFO)
-	print("## initialize pygame mixer")
-	pygame.mixer.init()
-	os.system("amixer cset numid=3 1")
-	os.system("amixer set PCM -- -000")
-	print("## read config")
+	GPIO.setmode(GPIO.BCM)		# set correct GPIO mode
+	#print(GPIO.RPI_INFO)		# not necessary when running at boot
+	#print("## initialize pygame mixer")
+	os.system("amixer cset numid=3 1")		# set output to analog line output
+	os.system("amixer set PCM -- -000")		# set volume to max volume
+	pygame.mixer.init()			# start pygame sound engine
+	#print("## read config")
 	read_config("config/buttons.ini")
-
+	button_react(0)				# do start procedure
 	try:  
 		while True:            # this will carry on until you hit CTRL+C 
-			#status = []
-			#for b in buttons:
-			#	status.append("%d: [%d]" % (b,GPIO.input(b)) )
-			#print("Status: ", ', '.join(status))
 			time.sleep(1)         # wait 0.1 seconds  
 
 	except KeyboardInterrupt:  
