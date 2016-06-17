@@ -14,9 +14,6 @@ sudo apt-get install rpi.gpio
 
 
 ## AUTORUN PYTHON SCRIPT ON BOOT
-sudo nano /lib/systemd/system/myscript.service
-# (edit)
-sudo chmod 644 /lib/systemd/system/myscript.service
-sudo systemctl daemon-reload
-sudo systemctl enable myscript.service
-# from http://www.raspberrypi-spy.co.uk/2015/10/how-to-autorun-a-python-script-on-boot-using-systemd/
+add to crontab
+
+@reboot /home/pi/github/bf_reaction_buttons/buttons.sh

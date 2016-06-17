@@ -80,6 +80,8 @@ def main():
 	print(GPIO.RPI_INFO)
 	print("## initialize pygame mixer")
 	pygame.mixer.init()
+	os.system("amixer cset numid=3 1")
+	os.system("amixer set PCM -- -000")
 	print("## read config")
 	read_config("config/buttons.ini")
 
