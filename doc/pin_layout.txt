@@ -1,44 +1,23 @@
-GPIO numbering:
-O   R
-2   R
-3   B
-4   14
-B   15
-17  18
-27  B
-22  23
-O   24
-10  B
-9   25
-11  8
-B   7
+This is schema for 6 switches:
 
-GPIO numbering:
-Power: Top R and bottom B
-Buttons: 17 27 22 10 9 11
-
-Physical numbering:
-Power: 2 (5V) and 25 (ground)
-Buttons: 3 5 7 11 13 15
-
-B = black (ground)
-O = Orange (3.3V)
-R = Red (5V)
-
-
- 3V3---o
-       |
-       |
-       >
-       > Resistor
-       >
-       |
-       |
-GPIO---o
-       |
-       |
-        \ Switch
-         \
-       |
-       |
- GND---o   
+3V3 -------0-----0-----0-----0-----0-----0-
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+           <     <     <     <     <     <     6 resistances
+           <     <     <     <     <     <     
+           <     <     <     <     <     <     
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+           X     X     X     X     X     X     GPIO
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+           0     0     0     0     0     0     
+            \     \     \     \     \     \    switches
+             \     \     \     \     \     \     
+           0     0     0     0     0     0     
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+           |     |     |     |     |     |     
+GND -------0-----0-----0-----0-----0-----0-
